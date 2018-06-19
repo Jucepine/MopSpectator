@@ -1,0 +1,11 @@
+## Interface: 50400
+## Title: Arena Spectator
+## Notes: Wowcircle edition.
+## Version: 2.1
+## SavedVariables: teamname, teamscore, tournamentMode
+
+## Title-ruRU: Спектатор Арены
+## Notes-ruRU: Аддон наблюдателя арены. Версия 2.1 специально для сервера Wowcircle. Автор - Kerhong. Издание для wowcircle - Ramusik
+
+ArenaSpectator.lua
+combatfeedback.lua
