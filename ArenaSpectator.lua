@@ -6,6 +6,10 @@
 --                 Bigpwn & Malaco (For Arena-Tournament.com)          --
 -------------------------------------------------------------------------
 
+ArenaSpectator = {};
+
+Text = {};
+
 local TimeFrame = CreateFrame("frame", nil, WorldFrame)
 TimeFrame.text = TimeFrame:CreateFontString("OVERLAY")
 TimeFrame.text:SetPoint("TOP", WorldFrame, "TOP", 0, -85)
@@ -31,20 +35,6 @@ local dtable = {
     [4]="poison" 
 }
 
--- Texts
-local TEXT = {
-    ["TOGGLEUI"] = "Toggle UI",
-    ["TOGGLEUIRU"] = "Переключить UI",
-    ["SUCCESS"] = "SUCCESS",
-    ["INTERRUPTED"] = "INTERRUPTED",
-    ["LEAVEARENAUI"] = "Leave Arena",
-    ["LEAVEARENAUIRU"] = "Покинуть арену",
-    ["RESETVIEWUI"] = "Reset View",
-    ["RESETVIEWUIRU"] = "Сбросить цель",
-    ["FIXINTERFACEUI"] = "Fix frames",
-    ["FIXINTERFACEUIRU"] = "Исправить фреймы",
-}
-
 local DTC = { 
     ["none"] = { r = 0.80, g = 0, b = 0 },
     ["magic"] = { r = 0.20, g = 0.60, b = 1.00 },
@@ -52,7 +42,6 @@ local DTC = {
     ["disease"] = { r = 0.60, g = 0.40, b = 0 },
     ["poison"] = { r = 0.00, g = 0.60, b = 0 },
 }
-
 
 local BAR_TEXTURE = "Interface\\Addons\\ArenaSpectator\\BarTexture2"
 
@@ -258,7 +247,8 @@ tournamentMode = false
 debugMode = false
 
 -- Each class icon coordinates in Interface\\Glues\\CharacterCreate\\UI-CharacterCreate-Classes
-local _CLASS_ICON_TCOORDS = {
+local _CLASS_ICON_TCOORDS =
+{
  ["WARRIOR"] = {0, 0.25, 0, 0.25},
  ["MAGE"] = {0.25, 0.49609375, 0, 0.25},
  ["ROGUE"] = {0.49609375, 0.7421875, 0, 0.25},
@@ -729,7 +719,7 @@ local function UpdateCastBar(self, elapsed)
         local change = elapsed * direction
         
         if (direction > 0 and current < goal) or (direction < 0 and current > goal) then
-            if ((p.fsmall.cast.text:GetText() == TEXT.SUCCESS) or (p.fsmall.cast.text:GetText() == TEXT.INTERRUPTED)) then
+            if ((p.fsmall.cast.text:GetText() == Text.SUCCESS) or (p.fsmall.cast.text:GetText() == Text.INTERRUPTED)) then
                 for _, barname in pairs(ALLBARS) do
                     p[barname].cast.text2:SetText("")
                 end
@@ -746,7 +736,7 @@ local function UpdateCastBar(self, elapsed)
                 p[barname].cast:SetValue(current + change)
             end
         else
-            if ((p.fsmall.cast.text:GetText() == TEXT.SUCCESS) or (p.fsmall.cast.text:GetText() == TEXT.INTERRUPTED)) then
+            if ((p.fsmall.cast.text:GetText() == Text.SUCCESS) or (p.fsmall.cast.text:GetText() == Text.INTERRUPTED)) then
                 for _, barname in pairs(ALLBARS) do
                     p[barname].cast:SetAlpha(0)
                     p[barname].castbg:SetAlpha(0)
@@ -757,7 +747,7 @@ local function UpdateCastBar(self, elapsed)
                     p[barname].cast:SetStatusBarColor(unpack(COLOR.CASTBAR_SUCCESS))
                     p[barname].cast:GetStatusBarTexture():SetTexture(unpack(COLOR.CASTBAR_SUCCESS))
                     p[barname].cast.text:SetTextColor(unpack(COLOR.CASTBAR_SUCCESS_TEXT))
-                    p[barname].cast.text:SetText(TEXT.SUCCESS)
+                    p[barname].cast.text:SetText(Text.SUCCESS)
                     p[barname].cast.direction = 1
                     p[barname].cast:SetMinMaxValues(0, 0.7)
                     p[barname].cast:SetValue(0)
@@ -1137,7 +1127,7 @@ local function CreateFrameForPlayer(p)
     cast.text = cast:CreateFontString("OVERLAY")
     cast.text:SetFont(STANDARD_TEXT_FONT, SIZE.SMALL.CASTBARTEXTSIZE, "OUTLINE")
     cast.text:SetPoint("LEFT", 14, 0)
-    cast.text:SetText(TEXT.SUCCESS)
+    cast.text:SetText(Text.SUCCESS)
     cast.text:SetTextColor(unpack(COLOR.CASTBAR_TEXT))
     cast.text2 = cast:CreateFontString("OVERLAY")
     cast.text2:SetFont(STANDARD_TEXT_FONT, SIZE.SMALL.CASTBARTEXTSIZE - 2, "OUTLINE")
@@ -1275,7 +1265,7 @@ local function CreateFrameForPlayer(p)
     scast.text = scast:CreateFontString("OVERLAY")
     scast.text:SetFont(STANDARD_TEXT_FONT, SIZE.BIG.CASTBARTEXTSIZE, "OUTLINE")
     scast.text:SetPoint("CENTER", 0, 0)
-    scast.text:SetText(TEXT.SUCCESS)
+    scast.text:SetText(Text.SUCCESS)
     scast.text:SetTextColor(unpack(COLOR.CASTBAR_TEXT))
     scast.text2 = scast:CreateFontString("OVERLAY")
     scast.text2:SetFont(STANDARD_TEXT_FONT, SIZE.SMALL.CASTBARTEXTSIZE - 2, "OUTLINE")
@@ -1387,7 +1377,7 @@ local function CreateFrameForPlayer(p)
     tcast.text = tcast:CreateFontString("OVERLAY")
     tcast.text:SetFont(STANDARD_TEXT_FONT, SIZE.BIG.CASTBARTEXTSIZE, "OUTLINE")
     tcast.text:SetPoint("CENTER", 0, 0)
-    tcast.text:SetText(TEXT.SUCCESS)
+    tcast.text:SetText(Text.SUCCESS)
     tcast.text:SetTextColor(unpack(COLOR.CASTBAR_TEXT))
     tcast.text2 = tcast:CreateFontString("OVERLAY")
     tcast.text2:SetFont(STANDARD_TEXT_FONT, SIZE.SMALL.CASTBARTEXTSIZE - 2, "OUTLINE")
@@ -2254,7 +2244,7 @@ ASPEC_USER_DROPDOWNBUTTONS = {};
 
 function ASPEC_try_spectate(self, name, unit, server)
     SendDebugMessage("try spec")
-    SendChatMessage(".spectate player " .. name, "GUILD");
+    SendChatMessage(".spectate player "..name, "GUILD");
 end
 
 -- This is to keep track when to overtake WHO_LIST_UPDATE
@@ -2272,15 +2262,11 @@ function ASPEC_FriendsFrame_OnEvent(...)
         ASPEC_original_FriendsFrame_OnEvent(...)
     end
 end
+
 ASPEC_original_FriendsFrame_OnEvent = FriendsFrame_OnEvent;
 FriendsFrame_OnEvent = ASPEC_FriendsFrame_OnEvent;
 
 ASPEC_ArenaZones = {"Nagrand Arena", "Blade's Edge Arena", "Ruins of Lordaeron", "Dalaran Arena", "The Ring of Valor"}
-if GetLocale() == "deDE" then
-elseif GetLocale() == "frFR" then
-elseif GetLocale() == "ruRU" then
-elseif GetLocale() == "esES" then
-end
 
 -- Check if zone is within arena (by name)
 function ASPEC_IsArenaZone(zone)
@@ -2598,10 +2584,20 @@ function updateScoreBoardFrame()
     teamTwoScoreBox.text:SetText(teamscore[1])
 end
 
--- Addon setup function
-local function init()
-    Reset()
+local function LoadLocale()
+    if GetLocale() == "ruRU" then -- Only for implemented locales, else - english
+        Text = Strings["ruRU"];
+    else
+        Text = Strings["enUS"];
+    end
+end
 
+-- Addon setup function
+function ArenaSpectator.Load()
+    Reset()
+    
+    LoadLocale();
+    
     -- Create event handling frame
     local frame = CreateFrame("Frame")
     frame:RegisterEvent("CHAT_MSG_ADDON")
@@ -2625,11 +2621,7 @@ local function init()
     toggle.text = toggle:CreateFontString()
     toggle.text:SetFont(STANDARD_TEXT_FONT, 12, "OUTLINE")
     toggle.text:SetPoint("CENTER", 0, 0)
-    if GetLocale() == "ruRU" then
-        toggle.text:SetText(TEXT.TOGGLEUIRU)
-    else
-        toggle.text:SetText(TEXT.TOGGLEUI)
-    end
+    toggle.text:SetText(Text.ToggleUI)
 
     -- Create leave battlefield button
     leavearena = CreateFrame("Button", nil, WorldFrame)
@@ -2643,11 +2635,7 @@ local function init()
     leavearena.text = leavearena:CreateFontString()
     leavearena.text:SetFont(STANDARD_TEXT_FONT, 12, "OUTLINE")
     leavearena.text:SetPoint("CENTER", 0, 0)
-    if GetLocale() == "ruRU" then
-        leavearena.text:SetText(TEXT.LEAVEARENAUIRU)
-    else
-        leavearena.text:SetText(TEXT.LEAVEARENAUI)
-    end
+    leavearena.text:SetText(Text.LeaveArenaUI)
     
     -- Create reset view button
     resetview = CreateFrame("Button", nil, WorldFrame)
@@ -2661,11 +2649,7 @@ local function init()
     resetview.text = resetview:CreateFontString()
     resetview.text:SetFont(STANDARD_TEXT_FONT, 12, "OUTLINE")
     resetview.text:SetPoint("CENTER", 0, 0)
-    if GetLocale() == "ruRU" then
-        resetview.text:SetText(TEXT.RESETVIEWUIRU)
-    else
-        resetview.text:SetText(TEXT.RESETVIEWUI)
-    end
+    resetview.text:SetText(Text.ResetViewUI)
 
     -- Create fix interface button
     fixinterface = CreateFrame("Button", nil, WorldFrame)
@@ -2679,11 +2663,7 @@ local function init()
     fixinterface.text = fixinterface:CreateFontString()
     fixinterface.text:SetFont(STANDARD_TEXT_FONT, 12, "OUTLINE")
     fixinterface.text:SetPoint("CENTER", 0, 0)
-    if GetLocale() == "ruRU" then
-        fixinterface.text:SetText(TEXT.FIXINTERFACEUIRU)
-    else
-        fixinterface.text:SetText(TEXT.FIXINTERFACEUI)
-    end
+    fixinterface.text:SetText(Text.FixInterfaceUI)
 
     setupScoreboardFrame()
 
@@ -2695,16 +2675,8 @@ local function init()
     damageBuffFrame:Show()
 
     -- Add spectate option to dropdowns
-    if GetLocale() == "ruRU" then
-        ASPEC_addDropDownMenuButton("ASPEC_DDMENU_1", "PLAYER", 1, "|cff00ffffНаблюдать|r", true, ASPEC_try_spectate, "Наблюдать")
-        ASPEC_addDropDownMenuButton("ASPEC_DDMENU_1", "FRIEND", 1, "|cff00ffffНаблюдать|r", true, ASPEC_try_spectate, "Наблюдать")
-    else
-        ASPEC_addDropDownMenuButton("ASPEC_DDMENU_1", "PLAYER", 1, "|cff00ffffSpectate|r", true, ASPEC_try_spectate, "Spectate")
-        ASPEC_addDropDownMenuButton("ASPEC_DDMENU_1", "FRIEND", 1, "|cff00ffffSpectate|r", true, ASPEC_try_spectate, "Spectate")
-    end
+    ASPEC_addDropDownMenuButton("ASPEC_DDMENU_1", "PLAYER", 1, "|cff00ffff"..Text.Spectate.."|r", true, ASPEC_try_spectate, Text.Spectate);
+    ASPEC_addDropDownMenuButton("ASPEC_DDMENU_1", "FRIEND", 1, "|cff00ffff"..Text.Spectate.."|r", true, ASPEC_try_spectate, Text.Spectate);
 
     DEFAULT_CHAT_FRAME:AddMessage("Loaded Arena Spectator UI")
 end
-
--- Call addon setup
-init()
