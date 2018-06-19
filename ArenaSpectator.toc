@@ -1,10 +1,11 @@
 ## Interface: 50408
 ## Title: Arena Spectator
+## Notes: |cff69ccf0Interface for a spectator mode, made by DeadMouse and Buka for PandaWoW.|r
 ## Version: 2.1
 ## SavedVariables: teamname, teamscore, tournamentMode
-
+## Author: DeadMouse + Buka
 ## Title-ruRU: Спектатор Арены
-## Notes-ruRU: Аддон наблюдателя арены
+## Notes-ruRU: |cFF0000FFАддон наблюдателя арены|r
 
 Core.lua
 
